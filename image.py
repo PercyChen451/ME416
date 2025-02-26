@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-This is a library of functions for performing color-based image segmentation
-of an image and finding its centroid.
-"""
+"""This is a library of functions for performing color-based image segmentation
+of an image and finding its centroid."""
 import cv2
 import numpy as np
-
 def image_segment(img, threshold_low, threshold_high):
     """
     Perform color-based segmentation on an image.
@@ -76,7 +73,9 @@ def image_centroid_test():
     Perform a sequence of test operations on the test image.
     """
     # Load the test image
-    img = cv2.imread('line-test.png')  # file path
+    #img = cv2.imread('line-test.png')  # file path
+    #img = cv2.imread('line-cross-2.png')
+    img = cv2.imread('line-cross-1.png')
     if img is None:
         print("Error: Could not load image. Check the file path.")
         return
@@ -91,12 +90,13 @@ def image_centroid_test():
     color = image_one_to_three_channels(img_seg)
     # Add a vertical line at the centroid
     line = image_line_vertical(color, x_centroid)
-    # Display the original and segmented images
-    cv2.imshow('Original Image', img)
-    cv2.waitKey(0)
-    cv2.imshow('Segmented Image with Centroid Line', line)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Save the original and segmented images
+    cv2.imwrite('original_image.png', img)
+    cv2.imwrite('segmented_image_with_centroid_line1.png', line)
+    #cv2.imwrite('segmented_image_with_centroid_line2.png', line)
+    
+    print("Images saved successfully.")
+    #cv2.destroyAllWindows()
 if __name__ == '__main__':
     image_centroid_test()
 def image_mix(img_object, img_background, threshold_low, threshold_high):
@@ -112,10 +112,24 @@ def image_mix(img_object, img_background, threshold_low, threshold_high):
         img_mix (np.array): An image where the solid-color background is replaced
                             with the new background.
     """
-    # segmentation, identify background in image
-    mask = image_segment(img_object, threshold_low, threshold_high)
-    # Create a copy of the object
-    img_mix = img_object.copy()
+
+    mask = image_segment(img_object, threshold_low, threshold_high) # segmentation, identify background in image
+    img_mix = img_object.copy()# Create a copy of the object
     # Replace the background pixels in the object image with the corresponding pixels from the new background image
     img_mix[mask == 255] = img_background[mask == 255]
     return img_mix
+    # delete hash before return to run hw1 at 
+# Chroma key?
+    mg_object = cv2.imread('object_on_green_screen.png')  # Replace with image
+    img_background = cv2.imread('new_background.png')      # Replace with background
+
+    # Define thresholds for the background color
+    threshold_low = (0, 50, 0)  # Lower bounds for B, G, R channels
+    threshold_high = (100, 255, 100)  # Upper bounds for B, G, R channels
+
+    # chroma key compositing
+    img_mix = image_mix(img_object, img_background, threshold_low, threshold_high)
+
+    # Save or display the result
+    cv2.imwrite('output_image.png', img_mix)
+    print("Output image saved as 'output_image.png'.")
