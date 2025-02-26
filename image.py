@@ -75,24 +75,39 @@ def image_centroid_test():
     # Load the test image
     #img = cv2.imread('line-test.png')  # file path
     #img = cv2.imread('line-cross-2.png')
-    img = cv2.imread('line-cross-1.png')
+    img = cv2.imread('line-test.png')
     if img is None:
-        print("Error: Could not load image. Check the file path.")
+        print("Error: Could not load image.")
         return
-    # Define thresholds for segmentation (BGR format)
-    t_low = (0, 0, 0)  # Lower bounds for B, G, R channels
-    t_high = (255, 255, 255)  # Upper bounds for B, G, R channels
-    # Perform segmentation
-    img_seg = image_segment(img, t_low, t_high)
-    # Compute the horizontal centroid of white pixels
+
+    # Define color thresholds
+    threshold_low = (0, 20, 0)  
+    threshold_high = (150, 255, 150)  
+    """
+    #damn it didn't work, i'll try HSV 
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    threshold_low = (30, 40, 40)  # Adjust hue, saturation, value
+    threshold_high = (90, 255, 255)  # Greenish range
+    mask = cv2.inRange(hsv, threshold_low, threshold_high)
+"""
+    # Segment the image
+    img_seg = image_segment(img, threshold_low, threshold_high)
+
+    # Compute the centroid
     x_centroid = image_centroid_horizontal(img_seg)
-    # Convert the segmented image to 3 channels for visualization
-    color = image_one_to_three_channels(img_seg)
-    # Add a vertical line at the centroid
-    line = image_line_vertical(color, x_centroid)
-    # Save the original and segmented images
-    cv2.imwrite('original_image.png', img)
-    cv2.imwrite('segmented_image_with_centroid_line1.png', line)
+
+    # Convert to 3-channel image
+    img_seg_color = image_one_to_three_channels(img_seg)
+
+    # Draw vertical line at centroid
+    img_result = image_line_vertical(img_seg_color, x_centroid)
+
+    # Save the images instead of displaying them
+    cv2.imwrite('segmented_image0.png', img_seg)
+    cv2.imwrite('segmented_image_with_centroid_line0.png', img_result)
+
+    print(f"Centroid X-Coordinate: {x_centroid}")
+    print("Images saved as 'segmented_image0.png' and 'segmented_image_with_centroid_line0.png'.")
     #cv2.imwrite('segmented_image_with_centroid_line2.png', line)
     
     print("Images saved successfully.")
