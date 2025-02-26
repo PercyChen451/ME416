@@ -99,7 +99,7 @@ def image_centroid_test():
     cv2.destroyAllWindows()
 if __name__ == '__main__':
     image_centroid_test()
-def image_mix(img_object, img_background, threshold_low, threshold_hi gh):
+def image_mix(img_object, img_background, threshold_low, threshold_high):
     """
     Combine an object image with a new background by replacing the solid-color
     background in the object image with the new background.
