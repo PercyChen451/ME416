@@ -111,7 +111,6 @@ def image_centroid_test():
     print(f"Centroid X-Coordinate: {x_centroid}")
     print("Images saved as 'segmented_image0.png' and 'segmented_image_with_centroid_line0.png'.")
     #cv2.imwrite('segmented_image_with_centroid_line2.png', line)
-    
     print("Images saved successfully.")
     #cv2.destroyAllWindows()
 if __name__ == '__main__':
@@ -151,3 +150,4 @@ def image_mix(img_object, img_background, threshold_low, threshold_high):
     # Save or display the result
     cv2.imwrite('output_image.png', img_mix)
     print("Output image saved as 'output_image.png'.")
+    
