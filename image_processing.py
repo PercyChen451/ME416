@@ -3,7 +3,8 @@
 This is a library of functions for performing color-based image segmentation
 of an image and finding its centroid.
 """
-import cv2
+from cv2 import cv2
+#import cv2
 import numpy as np
 
 def image_segment(img, threshold_low, threshold_high):
@@ -152,8 +153,8 @@ if __name__ == '__main__':
         print("Error: Could not load object or background image.")
     else:
         # Define thresholds for the background color
-        thresh_low = (0, 50, 0)  # Lower bounds for B, G, R channels
-        thresh_high = (100, 255, 100)  # Upper bounds for B, G, R channels
+        #thresh_low = (0, 50, 0)  # Lower bounds for B, G, R channels
+        #thresh_high = (100, 255, 100)  # Upper bounds for B, G, R channels
 
         # Chroma key compositing
         img_mix_result = image_mix(img_obj, img_bg, thresh_low, thresh_high)
