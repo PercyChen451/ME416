@@ -137,7 +137,7 @@ def image_mix(img_object, img_background, threshold_low, threshold_high):
     return img_mix
     # delete hash before return to run hw1 at
 # Chroma key?
-    mg_object = cv2.imread('object_on_green_screen.png')  # Replace with image
+    img_object = cv2.imread('object_on_green_screen.png')  # Replace with image
     img_background = cv2.imread('new_background.png')      # Replace with background
 
     # Define thresholds for the background color
