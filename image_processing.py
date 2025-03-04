@@ -117,7 +117,7 @@ def image_centroid_test():
     print("Images saved as 'segmented_image0.png' and 'segmented_image_with_centroid_line0.png'.")
 
 
-def image_mix(img_object, img_background,threshold_low, threshold_highthreshold_high):
+def image_mix(img_object, img_background,threshold_low, threshold_high):
     """
     Combine an object image with a new background by replacing the solid-color
     background in the object image with the new background.
