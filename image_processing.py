@@ -129,7 +129,7 @@ def image_mix(img_object, img_background, threshold_low, threshold_high):
                             with the new background.
     """
     # segmentation, identify background in image
-    mask = image_segment(img_object, threshold_low, threshold_high) 
+    mask = image_segment(img_object, threshold_low, threshold_high)
     img_mix = img_object.copy()# Create a copy of the object
     # Replace the background pixels in the object image with
     # the corresponding pixels from the new background image

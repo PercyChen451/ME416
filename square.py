@@ -20,7 +20,7 @@ for i in range(PATHLENGTH):
         speed_values = twist_to_speeds(square_path[i][0], square_path[i][1])
         left_motor.set_speed(speed_values[0])
         right_motor.set_speed(speed_values[1])
-        sleep(2)
+        sleep(3)
         # if fast, decrease time
         # sleep(1)
     else:
@@ -28,4 +28,6 @@ for i in range(PATHLENGTH):
         speed_values = twist_to_speeds(square_path[i][0], square_path[i][1])
         left_motor.set_speed(speed_values[0])
         right_motor.set_speed(speed_values[1])
-        sleep(0.5)
+        sleep(0.3)
+        # if fast
+        #sleep(0.5)
