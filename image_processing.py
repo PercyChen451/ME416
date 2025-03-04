@@ -6,23 +6,24 @@ of an image and finding its centroid.
 import cv2
 import numpy as np
 
-def image_segment(img, threshold_low, threshold_high):
+
+def image_segment(img, thresh_low, thresh_high):
     """
     Perform color-based segmentation on an image.
     Args:
         img (np.array): A color image (3 channels: BGR).
-        threshold_low (tuple): Lower bounds for each channel (B, G, R).
-        threshold_high (tuple): Upper bounds for each channel (B, G, R).
+        thresh_low (tuple): Lower bounds for each channel (B, G, R).
+        thresh_high (tuple): Upper bounds for each channel (B, G, R).
     Returns:
         img_segmented (np.array): A grayscale image where white pixels (255)
         represent pixels within the bounds, and black
         pixels (0) represent pixels outside the bounds.
     """
     # Convert thresholds to numpy arrays
-    threshold_low = np.array(threshold_low, dtype=np.uint8)
-    threshold_high = np.array(threshold_high, dtype=np.uint8)
+    thresh_low = np.array(thresh_low, dtype=np.uint8)
+    thresh_high = np.array(thresh_high, dtype=np.uint8)
     # Use cv2.inRange for binary mask
-    mask = cv2.inRange(img, threshold_low, threshold_high)
+    mask = cv2.inRange(img, thresh_low, thresh_high)
     # Convert to grayscale image
     img_segmented = mask
     return img_segmented
@@ -31,6 +32,7 @@ def image_segment(img, threshold_low, threshold_high):
 def image_line_vertical(img, x_line):
     """
     Adds a green 3px vertical line to the image.
+
     Args:
         img (np.array): A color image (3 channels: BGR).
         x_line (int): The x-coordinate of the vertical line.
@@ -57,6 +59,7 @@ def image_one_to_three_channels(img):
     img_three = np.tile(img.reshape(img.shape[0], img.shape[1], 1), (1, 1, 3))
     return img_three
 
+
 def image_centroid_horizontal(img):
     """
     Compute the median of the x-coordinates of all white pixels in a binary image.
@@ -77,6 +80,7 @@ def image_centroid_horizontal(img):
         x_centroid = 0  # Default value if no white pixels
     return x_centroid
 
+
 def image_centroid_test():
     """
     Perform a sequence of test operations on the test image.
@@ -88,11 +92,11 @@ def image_centroid_test():
         return
 
     # Define color thresholds
-    threshold_low = (0, 20, 0)
-    threshold_high = (150, 255, 150)
+    thresh_low = (0, 20, 0)
+    thresh_high = (150, 255, 150)
 
     # Segment the image
-    img_seg = image_segment(img, threshold_low, threshold_high)
+    img_seg = image_segment(img, thresh_low, thresh_high)
 
     # Compute the centroid
     x_centroid = image_centroid_horizontal(img_seg)
@@ -110,49 +114,48 @@ def image_centroid_test():
     print(f"Centroid X-Coordinate: {x_centroid}")
     print("Images saved as 'segmented_image0.png' and 'segmented_image_with_centroid_line0.png'.")
 
-def image_mix(img_object, img_background, threshold_low, threshold_high):
+
+def image_mix(img_obj, img_bg, thresh_low, thresh_high):
     """
     Combine an object image with a new background by replacing the solid-color
     background in the object image with the new background.
     Args:
-        img_object (np.array): A color image with an object on a solid-color background.
-        img_background (np.array): A color image of an arbitrary background.
-        threshold_low (tuple): Lower bounds for each channel (B, G, R).
-        threshold_high (tuple): Upper bounds for each channel (B, G, R).
+        img_obj (np.array): A color image with an object on a solid-color background.
+        img_bg (np.array): A color image of an arbitrary background.
+        thresh_low (tuple): Lower bounds for each channel (B, G, R).
+        thresh_high (tuple): Upper bounds for each channel (B, G, R).
     Returns:
         img_mix (np.array): An image where the solid-color background is replaced
                             with the new background.
     """
     # Segmentation, identify background in image
-    mask = image_segment(img_object, threshold_low, threshold_high)
-    
-    # Resize the background image
-    img_background_resized = cv2.resize(img_background, (img_object.shape[1], img_object.shape[0]))
-    
-    # Create a copy of the object image to avoid modification
-    img_mix = img_object.copy()
-    
-    # Step 4: Replace the background pixels in the object image with the corresponding pixels from the new background
-    img_mix[mask == 255] = img_background_resized[mask == 255]
-    
+    mask = image_segment(img_obj, thresh_low, thresh_high)
+    img_mix = img_obj.copy()  # Create a copy of the object
+    # Resize the background image to match the object image dimensions
+    img_bg_resized = cv2.resize(img_bg, (img_obj.shape[1], img_obj.shape[0]))
+    # Replace the background pixels in the object image with
+    # the corresponding pixels from the new background image
+    img_mix[mask == 255] = img_bg_resized[mask == 255]
     return img_mix
+
 
 if __name__ == '__main__':
     image_centroid_test()
 
     # Chroma key example
-    img_object = cv2.imread('object_on_green_screen.png')  # Replace with image
-    img_background = cv2.imread('new_background.png')      # Replace with background
+    img_obj = cv2.imread('object_on_green_screen.png')  # Replace with image
+    img_bg = cv2.imread('new_background.png')  # Replace with background
 
-    if img_object is None or img_background is None:
+    if img_obj is None or img_bg is None:
         print("Error: Could not load object or background image.")
     else:
         # Define thresholds for the background color
-        threshold_low = (0, 50, 0)  # Lower bounds for B, G, R channels
-        threshold_high = (100, 255, 100)  # Upper bounds for B, G, R channels
+        thresh_low = (0, 50, 0)  # Lower bounds for B, G, R channels
+        thresh_high = (100, 255, 100)  # Upper bounds for B, G, R channels
+
         # Chroma key compositing
-        img_mix = image_mix(img_object, img_background, threshold_low, threshold_high)
+        img_mix_result = image_mix(img_obj, img_bg, thresh_low, thresh_high)
 
         # Save or display the result
-        cv2.imwrite('output_image.png', img_mix)
+        cv2.imwrite('output_image.png', img_mix_result)
         print("Output image saved as 'output_image.png'.")
