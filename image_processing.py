@@ -93,8 +93,8 @@ def image_centroid_test():
         return
 
     # Define color thresholds
-    thresh_low = (0, 20, 0)
-    thresh_high = (150, 255, 150)
+    threshold_low = (0, 20, 0)
+    threshold_high = (150, 255, 150)
 
     # Segment the image
     img_seg = image_segment(img, thresh_low, thresh_high)
@@ -144,18 +144,18 @@ if __name__ == '__main__':
     image_centroid_test()
 
     # Chroma key example
-    img_obj = cv2.imread('object_on_green_screen.png')  # Replace with image
-    img_bg = cv2.imread('new_background.png')  # Replace with background
+    img_object = cv2.imread('object_on_green_screen.png')  # Replace with image
+    img_background = cv2.imread('new_background.png')  # Replace with background
 
-    if img_obj is None or img_bg is None:
+    if img_object is None or img_background is None:
         print("Error: Could not load object or background image.")
     else:
         # Define thresholds for the background color
-        #thresh_low = (0, 50, 0)  # Lower bounds for B, G, R channels
-        #thresh_high = (100, 255, 100)  # Upper bounds for B, G, R channels
+        threshold_low = (0, 50, 0)  # Lower bounds for B, G, R channels
+        threshold_high = (100, 255, 100)  # Upper bounds for B, G, R channels
 
         # Chroma key compositing
-        img_mix_result = image_mix(img_obj, img_bg, thresh_low, thresh_high)
+        img_mix_result = image_mix(img_object,img_background, threshold_low, threshold_high)
 
         # Save or display the result
         cv2.imwrite('output_image.png', img_mix_result)
