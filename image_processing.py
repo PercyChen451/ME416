@@ -3,10 +3,8 @@
 This is a library of functions for performing color-based image segmentation
 of an image and finding its centroid.
 """
-from cv2 import cv2
-#import cv2
+import cv2
 import numpy as np
-
 def image_segment(img, threshold_low, threshold_high):
     """
     Perform color-based segmentation on an image.
