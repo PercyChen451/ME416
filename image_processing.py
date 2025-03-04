@@ -6,10 +6,6 @@ of an image and finding its centroid.
 import cv2
 import numpy as np
 
-
-import cv2
-import numpy as np
-
 def image_segment(img, threshold_low, threshold_high):
     """
     Perform color-based segmentation on an image.
@@ -121,7 +117,7 @@ def image_centroid_test():
     print("Images saved as 'segmented_image0.png' and 'segmented_image_with_centroid_line0.png'.")
 
 
-def image_mix(img_obj, img_bg, thresh_low, thresh_high):
+def image_mix(img_object, img_background,threshold_low, threshold_highthreshold_high):
     """
     Combine an object image with a new background by replacing the solid-color
     background in the object image with the new background.
@@ -135,10 +131,10 @@ def image_mix(img_obj, img_bg, thresh_low, thresh_high):
                             with the new background.
     """
     # Segmentation, identify background in image
-    mask = image_segment(img_obj, thresh_low, thresh_high)
-    img_mix = img_obj.copy()  # Create a copy of the object
+    mask = image_segment(img_object, threshold_low, threshold_high)
+    img_mix = img_object.copy()  # Create a copy of the object
     # Resize the background image to match the object image dimensions
-    img_bg_resized = cv2.resize(img_bg, (img_obj.shape[1], img_obj.shape[0]))
+    img_bg_resized = cv2.resize(img_background, (img_object.shape[1],img_object.shape[0]))
     # Replace the background pixels in the object image with
     # the corresponding pixels from the new background image
     img_mix[mask == 255] = img_bg_resized[mask == 255]
