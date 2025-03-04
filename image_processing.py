@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 This is a library of functions for performing color-based image segmentation
 of an image and finding its centroid.
 """
 import cv2
 import numpy as np
+
 def image_segment(img, threshold_low, threshold_high):
     """
     Perform color-based segmentation on an image.
@@ -93,8 +95,8 @@ def image_centroid_test():
         return
 
     # Define color thresholds
-    threshold_low = (0, 20, 0)
-    threshold_high = (150, 255, 150)
+    global thresh_low = (0, 20, 0)
+    global thresh_high = (150, 255, 150)
 
     # Segment the image
     img_seg = image_segment(img, thresh_low, thresh_high)
@@ -144,19 +146,17 @@ if __name__ == '__main__':
     image_centroid_test()
 
     # Chroma key example
-    img_object = cv2.imread('object_on_green_screen.png')  # Replace with image
-    img_background = cv2.imread('new_background.png')  # Replace with background
+    img_obj = cv2.imread('object_on_green_screen.png')  # Replace with image
+    img_bg = cv2.imread('new_background.png')  # Replace with background
 
-    if img_object is None or img_background is None:
+    if img_obj is None or img_bg is None:
         print("Error: Could not load object or background image.")
     else:
         # Define thresholds for the background color
-        threshold_low = (0, 50, 0)  # Lower bounds for B, G, R channels
-        threshold_high = (100, 255, 100)  # Upper bounds for B, G, R channels
-
+        thresh_low = (0, 50, 0)  # Lower bounds for B, G, R channels
+        thresh_high = (100, 255, 100)  # Upper bounds for B, G, R channels
         # Chroma key compositing
-        img_mix_result = image_mix(img_object,img_background, threshold_low, threshold_high)
-
+        img_mix_result = image_mix(img_obj, img_bg, thresh_low, thresh_high)
         # Save or display the result
         cv2.imwrite('output_image.png', img_mix_result)
         print("Output image saved as 'output_image.png'.")
