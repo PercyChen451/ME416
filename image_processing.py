@@ -95,10 +95,11 @@ def image_centroid_test():
         return
 
     # Define color thresholds
-    thresh_low = (0, 20, 0)
-    thresh_high = (150, 255, 150)
     global thresh_low
     global thresh_high
+    thresh_low = (0, 20, 0)
+    thresh_high = (150, 255, 150)
+
 
     # Segment the image
     img_seg = image_segment(img, thresh_low, thresh_high)
