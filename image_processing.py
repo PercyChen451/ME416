@@ -7,25 +7,31 @@ import cv2
 import numpy as np
 
 
-def image_segment(img, thresh_low, thresh_high):
+import cv2
+import numpy as np
+
+def image_segment(img, threshold_low, threshold_high):
     """
     Perform color-based segmentation on an image.
     Args:
         img (np.array): A color image (3 channels: BGR).
-        thresh_low (tuple): Lower bounds for each channel (B, G, R).
-        thresh_high (tuple): Upper bounds for each channel (B, G, R).
+        threshold_low (tuple): Lower bounds for each channel (B, G, R).
+        threshold_high (tuple): Upper bounds for each channel (B, G, R).
     Returns:
         img_segmented (np.array): A grayscale image where white pixels (255)
         represent pixels within the bounds, and black
         pixels (0) represent pixels outside the bounds.
     """
     # Convert thresholds to numpy arrays
-    thresh_low = np.array(thresh_low, dtype=np.uint8)
-    thresh_high = np.array(thresh_high, dtype=np.uint8)
-    # Use cv2.inRange for binary mask
-    mask = cv2.inRange(img, thresh_low, thresh_high)
-    # Convert to grayscale image
+    threshold_low = np.array(threshold_low, dtype=np.uint8)
+    threshold_high = np.array(threshold_high, dtype=np.uint8)
+
+    # Use cv2.inRange to create a binary mask
+    mask = cv2.inRange(img, threshold_low, threshold_high)
+
+    # The mask is already a grayscale image where white pixels (255) represent
     img_segmented = mask
+
     return img_segmented
 
 
