@@ -29,8 +29,8 @@ robot_test_imgs = load_images(robot_test_files)
 bkgd_test_imgs = load_images(bkgd_test_files)
 
 # define thresholds
-thresh_low = (30, 150, 30)
-thresh_high= (150, 200, 200)
+thresh_low = (0, 100, 0)
+thresh_high= (150, 250, 150)
 
 # run image_mix on all combinations
 # training images
